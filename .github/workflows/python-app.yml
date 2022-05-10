@@ -19,5 +19,5 @@ jobs:
 
     steps:
     - name: Set up Python 3.10
-    - run: |
+      run: |
         python --version
