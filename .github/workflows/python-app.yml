@@ -17,11 +17,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: connect SSH Remote
-      uses: appleboy/ssh-action@v0.1.4
-      with:
-        host: ${{secrets.HOST}}
-        port: ${{secrets.PORT}}
-        username: ${{secrets.USER}}
-        key: ${{secrets.SSH_KEY}}
-        script: |
-          ls -al
+      run: |
+        echo ${{secrets.HOST}}
