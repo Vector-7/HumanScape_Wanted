@@ -18,4 +18,5 @@ jobs:
     steps:
     - name: connect SSH Remote
       run: |
-        echo ${{secrets.HOST}}
+        ls
+        pwd
