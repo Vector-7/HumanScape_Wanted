@@ -14,10 +14,14 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - name: Set up Python 3.10
-      run: |
-        python --version
+    - name: connect SSH Remote
+      uses: appleboy/ssh-action@v0.1.4
+      with:
+        host: ${{secrets.HOST}}
+        port: ${{secrets.PORT}}
+        username: ${{secrets.USER}}
+        key: ${{secrets.SSH_KEY}}
+        script: |
+          ls -al
