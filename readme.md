@@ -44,11 +44,25 @@ _**Note**:_ django-contrab 실행에 필요한 fcntl이 Unix 계열 에만 존�
 
 ### For Developers
 해당 코드를 개작 또는 분석 하려는 개발자들을 대상으로 작성된 안내서 입니다.
-1. repository를 다운받습니다.
+1. Python VM을 생성하고 적용합니다.
+    ```bash
+    python -m venv <Name> <Name>
+    source ./<name>/bin/activate
+    ```
+2. pip를 최신 버전으로 업그레이드 합니다
+    ```
+    pip install --upgrade pip
+    ```
+3. repository를 다운받고 해당 repository로 이동합니다.
     ```bash
     git clone https://github.com/2nd-wanted-pre-onboarding-team-b/HumanScape_Wanted.git
+    cd HumanScape_Wanted
     ```
-2. repository의 최상단에 .env 파일을 추가하고 파일 내용을 아래와 같이 작성합니다.
+4. 파이썬 패키지를 설치합니다.
+    ```
+    pip install -r requirements.txt
+    ```
+5. repository의 최상단에 .env 파일을 추가하고 파일 내용을 아래와 같이 작성합니다.
     ```bash
     SECRET_KEY=<DJango Secret Key>
     MYSQL_LOCAL_PASSWORD=<MySQL Password>
@@ -57,33 +71,34 @@ _**Note**:_ django-contrab 실행에 필요한 fcntl이 Unix 계열 에만 존�
     URL="http://apis.data.go.kr/1352159/crisinfodataview/list"
     API_KEY=<url에 대한 api key>
     ```
-3. MySQL을 작동시킵니다.
-4. MySQL에 마이그레이션을 합니다.
+6. MySQL을 작동시킵니다.
+7. MySQL에 마이그레이션을 합니다.
     ```bash
     python manage.py migrate --settings=config.settings.local
     python manage.py makemigrations --settings=config.settings.local
     python manage.py migrate --settings=config.settings.local
     ```
-5. 아래와 같이 명령어를 입력하여 Batch Process와 Application을 실행합니다.
+8. 아래와 같이 명령어를 입력하여 Batch Process와 Application을 실행합니다.
     ```bash
     python manage.py contrab add --settings=config.settings.local
     python manage.py runserver --settings=config.settings.local
     ```
-6. 단, 외부에서 접속을 원한다면 runserver 명령어에서 맨 마지막에 0.0.0.0:PORT를 추가합니다.
+9. 단, 외부에서 접속을 원한다면 runserver 명령어에서 맨 마지막에 0.0.0.0:PORT를 추가합니다.
     ```
-    python manage.py contrab add --settings=config.settings.local 0.0.0.0:[PORT]
+    python manage.py runserver --settings=config.settings.local 0.0.0.0:[PORT]
     ```
-7. 테스트 코드를 실행하고 싶은 경우, 아래와 같이 명렁어를 입력합니다.
+10. 테스트 코드를 실행하고 싶은 경우, 아래와 같이 명렁어를 입력합니다.
     ```
-    python manage.py test tests --settings=config.settings.local 0.0.0.0:[PORT]
+    python manage.py test tests --settings=config.settings.local
     ```
 
 ### For Deployers
 해당 어플리케이션을 배포하려는 배포자들을 대상으로 작성된 안내서 입니다.
 
-1. repository를 다운받습니다.
+1. repository를 다운받고 해당 위치로 이동합니다.
     ```bash
     git clone https://github.com/2nd-wanted-pre-onboarding-team-b/HumanScape_Wanted.git
+    cd HumanScape_Wanted
     ```
 2. repository의 최상단에 .env 파일을 추가하고 파일 내용을 아래와 같이 작성합니다.
     * _**Note**_: MySQL Root 계정이 아닌 일반 계정에서는 작동하지 않습니다. User Password에서도 Root Password를 입력하십시오.
