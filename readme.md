@@ -284,6 +284,7 @@ API
   * Https 세팅
   * Github Action을 이용한 자동 배포
     * 과거에 CircleCI, TravisCI를 써봤기 때문에, Github Action의 Script작성도 기존 CI툴과 고만고만하다고 생각했지만, Github Action에서의 환경은 달랐습니다. 좀 더 Github Action에 대한 공부가 필요한 것 같습니다.
+---
 
 ### 남기윤 (아래는 기본 양식입니다.)
   * 구현 기능 설명(캡쳐 이미지등을 활용해주세요)
