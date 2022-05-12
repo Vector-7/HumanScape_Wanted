@@ -8,8 +8,8 @@ def get_data():
         작성자 : 최승리
         공공 데이터 포털에서 open api 데이터 조회
     """
-    url = os.environ.get('URL')
-    api_key = os.environ.get('API_KEY')
+    url = os.environ.get('ICREAT_URL')
+    api_key = os.environ.get('ICREAT_API_KEY')
     api_key_decode = parse.unquote(api_key)
     # open api가 요구하는 params
     params = {

@@ -145,4 +145,5 @@ CRONTAB_DJANGO_SETTINGS_MODULE = 'config.settings.local'
 # 매주 월요일 새벽 1시 실행
 CRONJOBS = [
     ('* 1 * * 1', 'v1.icreat_batch.cron.batch_req', '>>'+f'{BASE_DIR}'+'/cron.log 2>&1'),
+    ('* 1 * * 1', 'v2.icreat_batch.cron.batch_get_data', '>>'+f'{BASE_DIR}'+'/cron.log2 2>&1'),
 ]

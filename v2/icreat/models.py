@@ -1,23 +1,25 @@
 from django.db import models
 
 
-class IcreatV2(models.Model): 
-    subject = models.TextField(verbose_name='과제명')
-    sub_num = models.CharField(max_length=100, unique=True, verbose_name='과제번호')
-    period = models.CharField(max_length=20, verbose_name='연구기간', blank=True)
-    boundary = models.CharField(max_length=50, verbose_name='연구범위')
-    remark = models.CharField(max_length=100, verbose_name='연구종류')
-    institute = models.CharField(max_length=100, verbose_name='연구책임기관')
-    trial = models.CharField(max_length=100, verbose_name='임상시험단계(연구모형)', blank=True)
-    goal_research = models.CharField(max_length=20, verbose_name='전체목표연구대상자수', blank=True)
-    meddept = models.CharField(max_length=100, verbose_name='진료과')
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
+class IcreatV2(models.Model):
+    trial_id = models.CharField(max_length=20, unique=True, verbose_name='CRIS등록번호')
+    scientific_title_kr = models.TextField(verbose_name='연구제목 국문')
+    scientific_title_en = models.TextField(verbose_name='연구제목 영문')
+    date_registration = models.DateTimeField(verbose_name='연구등록일', null=True)
+    date_updated = models.DateTimeField(verbose_name='최종갱신일', null=True)
+    date_enrolment = models.DateTimeField(verbose_name='첫 연구대상자 등록일', null=True)
+    type_enrolment_kr = models.CharField(max_length=30, verbose_name='첫 연구대상자 등록여부 국문', blank=True)
+    results_date_completed = models.DateTimeField(verbose_name='연구종료일', null=True)
+    results_type_date_completed_kr = models.CharField(max_length=30, verbose_name='연구종료일/ 상태 국문', blank=True)
+    study_type_kr = models.CharField(max_length=40,verbose_name='연구종류 국문', blank=True)
+    i_freetext_kr = models.TextField(verbose_name='중재종류 국문', blank=True)
+    phase_kr = models.CharField(max_length=100, verbose_name='임상시험단계 국문', blank=True)
+    source_name_kr = models.CharField(max_length=200, verbose_name='연구비지원 기관명 국문', blank=True)
+    primary_sponsor_kr = models.CharField(max_length=200, verbose_name='연구책임 기관명 국문', blank=True)
+    primary_outcome_1_kr = models.TextField(verbose_name='주요결과변수 1 국문', blank=True)
 
     def __str__(self):
         return self.subject
 
     class Meta:
         db_table = 'icreat_v2'
-        indexes = (models.Index(fields=('sub_num',), name='sub_num_v2_idx'), )
