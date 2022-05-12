@@ -13,6 +13,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 PROJECT_APPS = [
     'v1.icreat',
     'v1.icreat_batch',
+    'v2.icreat',
+    'v2.icreat_batch',
 ]
 
 THIRD_PARTY_APPS = [
