@@ -103,7 +103,7 @@ class SubjectListView(ListCreateAPIView): #/api/v1/icreat/list
         tags=['Icreate CRUD'],
         responses={
             200: openapi.Response(
-                description="ㅇㅇㅇ",
+                description="성공",
                 examples={
                     "application/json": {
                         "result": [
