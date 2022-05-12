@@ -8,8 +8,7 @@ class TestIcreatDelete(APITestCase):
     """
     작성자: 하정현
     """
-    UPLOAD_API = '/api/v1/icreat/create'
-    API = '/api/v1/icreat'
+    API = '/api/v2/icreat'
     # 업로드
     req = {
         "subject"       : '조직구증식증 임상연구 네트워크 구축 및 운영(HLH)',

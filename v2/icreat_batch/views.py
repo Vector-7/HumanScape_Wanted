@@ -11,6 +11,9 @@ from .utils import get_data
 from .models import BatchLogV2
 
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 class IcreatBatchView(APIView):
     """
         작성자 : 최승리
@@ -42,6 +45,11 @@ class IcreatBatchView(APIView):
             updated_list = updated_list,
             )
 
+    @swagger_auto_schema(
+        tags=['임상 실험 과제를 API Server로부터 갱신합니다.'],
+        responses={
+            201: '성공',
+    })
     def post(self, request):
         # 로깅을 위한 변수 SET
         created_count = 0
