@@ -38,4 +38,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/icreat', include('v1.icreat.urls')),
     path('api/v1/batch', include('v1.icreat_batch.urls')),
+    path('api/v2/icreat', include('v2.icreat.urls')),
+    path('api/v2/batch', include('v2.icreat_batch.urls')),
 ] + swagger_urlpatterns
