@@ -37,7 +37,126 @@
 ```
 ## 실행 안내
 
-**누구나 따라 할 수 있을 정도의 자세한 실행 방법, 가이드대로 실행되지 않을경우 트러블 슈팅 가이드를 함께 제시해야 합니다.**
+_**Note**:_ django-contrab 실행에 필요한 fcntl이 Unix 계열 에만 존재합니다. 따라서 해당 Application은 **MacOS, Ubuntu 같은 Unix 기반 운영체제에서만 작동합니다.**
+> **fcntl?** 
+>
+>  유닉스 체제에서는 일반 파일 뿐만 아니라 네트워크 소켓, 장치 등을 파일로 취급하고 관리합니다. fcntl은 이러한 유닉스 환경 속에서 파일들을 컨트롤 하기위해 제공되는 툴 입니다. 하지만 모든 리소스들을 파일로 취급하지 않는 Windows에서는 fcntl을 지원하지 않습니다.
+
+### For Developers
+해당 코드를 개작 또는 분석 하려는 개발자들을 대상으로 작성된 안내서 입니다.
+1. repository를 다운받습니다.
+    ```bash
+    git clone https://github.com/2nd-wanted-pre-onboarding-team-b/HumanScape_Wanted.git
+    ```
+2. repository의 최상단에 .env 파일을 추가하고 파일 내용을 아래와 같이 작성합니다.
+    ```bash
+    SECRET_KEY=<DJango Secret Key>
+    MYSQL_LOCAL_PASSWORD=<MySQL Password>
+    ICREAT_URL="https://api.odcloud.kr/api/3074271/v1/uddi:cfc19dda-6f75-4c57-86a8-bb9c8b103887"
+    ICREAT_API_KEY=<INCREAT_URL에 대한 Api Key>
+    URL="http://apis.data.go.kr/1352159/crisinfodataview/list"
+    API_KEY=<url에 대한 api key>
+    ```
+3. MySQL을 작동시킵니다.
+4. MySQL에 마이그레이션을 합니다.
+    ```bash
+    python manage.py migrate --settings=config.settings.local
+    python manage.py makemigrations --settings=config.settings.local
+    python manage.py migrate --settings=config.settings.local
+    ```
+5. 아래와 같이 명령어를 입력하여 Batch Process와 Application을 실행합니다.
+    ```bash
+    python manage.py contrab add --settings=config.settings.local
+    python manage.py runserver --settings=config.settings.local
+    ```
+6. 단, 외부에서 접속을 원한다면 runserver 명령어에서 맨 마지막에 0.0.0.0:PORT를 추가합니다.
+    ```
+    python manage.py contrab add --settings=config.settings.local 0.0.0.0:[PORT]
+    ```
+7. 테스트 코드를 실행하고 싶은 경우, 아래와 같이 명렁어를 입력합니다.
+    ```
+    python manage.py test tests --settings=config.settings.local 0.0.0.0:[PORT]
+    ```
+
+### For Deployers
+해당 어플리케이션을 배포하려는 배포자들을 대상으로 작성된 안내서 입니다.
+
+1. repository를 다운받습니다.
+    ```bash
+    git clone https://github.com/2nd-wanted-pre-onboarding-team-b/HumanScape_Wanted.git
+    ```
+2. repository의 최상단에 .env 파일을 추가하고 파일 내용을 아래와 같이 작성합니다.
+    * _**Note**_: MySQL Root 계정이 아닌 일반 계정에서는 작동하지 않습니다. User Password에서도 Root Password를 입력하십시오.
+    ```bash
+    SECRET_KEY=<DJango Secret Key>
+    MYSQL_USER=root
+    MYSQL_USER_PASSWORD=<ROOT Password>
+    MYSQL_ROOT_PASSWORD=<ROOT Password>
+    MYSQL_DATABASE=humanscape
+    ICREAT_URL="https://api.odcloud.kr/api/3074271/v1/uddi:cfc19dda-6f75-4c57-86a8-bb9c8b103887"
+    ICREAT_API_KEY=<INCREAT_URL에 대한 Api Key>
+    URL="http://apis.data.go.kr/1352159/crisinfodataview/list"
+    API_KEY=<url에 대한 api key>
+    ```
+3. MySQL을 작동시킵니다.
+4. Docker Network를 구성합니다. 모든 Docker Container들은 humanscape라는 이름의 network위에 작동하므로 humanscape 이름의 네트워크를 추가합니다.
+    ```
+    sudo docker network create humanscape
+    ```
+5. Docker Compose를 실행하면 서버가 작동됩니다.
+    ```
+    sudo docker compose up -d
+    ```
+6. 업데이트를 위해 서버를 재업로드를 할 경우 remove.sh를 이용해 container를 자운 다음 다시 생성합니다. 이때 MySQL Container는 지워지지 않습니다.
+    ```
+    sudo sh remove.sh
+    sudo docker compose up -d
+    ```
+
+### TroubleShooting
+#### For Developers
+#### For Deployers
+* MySQL은 작동이 되는데, Backend가 작동(대부분 마이그레이션)이 안되는 경우
+  * MySQL Container와 DJango Container가 하나의 Network위에 있는 지 확인하십시오 아래와 같은 명령어를 입력하면 두 개의 컨테이너가 출력되어야 합니다.
+      ```
+      $ sudo docker network inspect humanscape
+      [
+        {
+          "Name": "humanscape",
+            ....생략...
+        
+        },
+        {
+          "Name": "humanscape_db",
+            ....생략...
+        }
+      ]
+      
+      ```
+      * 둘 중에 하나 이상이 없는 경우 해당 컨테이너와 네트워크를 전부 삭제하고 다시 네트워크를 생성하십시오.
+      * 두개 다 연결되어 있는데도 작동이 안된다면, humanscape_db의 Docker IP(IPv4Address)를 확인합니다.
+        ```
+        $ sudo docker network inspect humanscape
+
+        ... 생략 ...
+        {
+          "Name": "humanscape_db",
+          ... 생략 ...
+            "IPv4Address": "172.18.x.x"
+        }
+        ```
+      * 그리고 docker-compose.yml의 MYSQL_HOST를 해당 Docker IP로 수정한 뒤, 다시 ```sudo docker compose up -d``` 를 수행합니다.
+          ```yml
+          docker-compose.yml
+
+          services:
+            humanscape_backend:
+            ... 생략 ...
+            environment:
+              ...
+              MYSQL_HOST: <Docker IP>
+          ```
+      *  **그래도 작동이 안된다면** 포트 연결, 방화벽 또는 포트 충돌 여부를 확인하십시오.
 
 ## 휴먼스케이프 project 요구사항 분석
 
@@ -121,6 +240,51 @@ API
 * `METHOD = POST`, `api/v1/batch` 로 request합니다. `{'message' : "success!"}`가 출력되면 성공!
 ---
 ### 하정현
+#### 배포 진행
+
+
+![](https://raw.githubusercontent.com/Vector-7/Vector-7/master/1.PNG)
+
+
+1. AWS EC2/RDS, GCP를 사용하지 않고 개인 서버를 사용한 이유
+  * 1년전 과금을 문 이후(RDS를 한달 간 방치)로 일절 사용하지 않음
+  * 프리티어가 만료되었으므로 1시간만 사용해도 비용이 발생
+  * GCP도 마찬가지로 1년 무료 쿠폰(300$)이 만료됨
+  * 리눅스 복기하는 의미로 개인서버에서 직접 배포 진행
+
+2. 배포 전략
+  * NginX
+    * 최종 목표는 Swagger를 브라우저에 띄우는 것입니다. 단순히 Backend API만 배포한다면 포트가 외부로 열려있는 이상 프레임워크가 자체적으로 돌아가기 때문에 그냥 Backend를 열어놓고 CORS만 허용한다면 외부에서 접근이 가능하지만, 파일 형태로 존재하는 정적파일은 말 그대로 파일 상태로만 있기 때문에 이를 툴 없이 외부에서 접근한다는 것은 해킹 말고는 다른 방법이 없습니다. 그렇기 때문에 특정 url을 입력하면 바로 정적 파일로 이동시키는 Proxy Server를 새로 구축했습니다.
+    * 아래의 코드는 /static에 접근하면  staticfiles의 정적 파일을 불러오는 역할을 하는 데, Swagger에서는 css/js 파일을 불러올 때 /static을 사용합니다. 따라서 static이 url에 포함되면, css/js파일이 있는 staticfiles로 이동하게 합니다.
+      ```
+      default
+      # /statiuc
+      location /static/ {
+                alias /home/user/projects/HumanScape_Wanted/staticfiles/;
+      }
+      ```
+  * Swagger 정적 파일 추출
+    * 하지만 문제는 Swagger의 정적 파일이 어디있냐는 것입니다. 정적 파일을 추출하기 위해 ```python manage.py collectstatic``` 명령어로 정적파일을 추출할 수 있었습니다.
+
+3. 보안 전략
+  * 공유기에서 필요한 포트만 열어놓기
+    * 서버에서 모든 포트를 열어놓으면 해킹의 위험이 높기 때문에 필요한 포트만 열어놓습니다.
+  * Database 접근 제한
+    * Backend까지는 Frontend에서 API요청을 해야 하므로 노출되도 무관하지만 Backend 뒤의 Resource들 (데이터베이스, 캐시 시스템, 일부 Private API Server...)은 밖으로 절때 노출되지 말아야 하고, 내부에서만 서로 통신하게 해야 합니다.
+    * 해당 프로젝트에서는 데이터베이스가 3306번 포트로 동작하게 되는 데, 외부에 접근하지 못하게 공유기 상에서 포트를 막았습니다.
+    * 그렇다면 데이터베이스는 내부 서버에서만 통신해야 하는 데, 다행이 데이터베이스와 백엔드는 Docker Container로 이루어져 있고 Docker Network를 통해 밖으로 노출되지 않은 채 서로 통신을 할 수 있었습니다.
+  * SSH 접근 제한
+    * 서버상에서 작업을 하려면 SSH를 필수 입니다. Password입력을 통한 Login은 Password가 해킹될 가능성이 있으므로 Password Login은 막아두고 오직 SSH Key로만 Login을 할 수 있게 설정했습니다.
+      ```bash
+      # /etc/ssh/sshd_config
+      PasswordAuthentication no
+      ```
+
+4. 미처 못했던 부분들
+  * Https 세팅
+  * Github Action을 이용한 자동 배포
+    * 과거에 CircleCI, TravisCI를 써봤기 때문에, Github Action의 Script작성도 기존 CI툴과 고만고만하다고 생각했지만, Github Action에서의 환경은 달랐습니다. 좀 더 Github Action에 대한 공부가 필요한 것 같습니다.
+
 ### 남기윤 (아래는 기본 양식입니다.)
   * 구현 기능 설명(캡쳐 이미지등을 활용해주세요)
   * 구현 방법과 이유 (이론적 설명을 포함해주시면 좋습니다. + ex)사용한 기술을 선정한 이유, 효율성, 확장성에대한 설명 등)
