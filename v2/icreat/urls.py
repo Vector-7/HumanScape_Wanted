@@ -1,5 +1,5 @@
 from django.urls import path
-from v1.icreat.views import SubjectListView, SubjectDetailView
+from v2.icreat.views import SubjectListView, SubjectDetailView
 
 
 urlpatterns = [
