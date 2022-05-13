@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class IcreatBatchConfig(AppConfig):
+class IcreatConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    label = 'icreat_batch'
-    name = 'v1.icreat_batch'
+    label = 'icreat'
+    name = 'apps.icreat'

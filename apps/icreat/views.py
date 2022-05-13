@@ -1,23 +1,21 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from uritemplate import partial
-from .serializers import IcreatSerializer
-from .models import Icreat
 from datetime import datetime, timedelta
+
 from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
-from rest_framework import status
 
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
+from rest_framework import status
 
-from v1.icreat.models import Icreat
+from .serializers import IcreatSerializer
+from .models import Icreat
 
-'''
-작성자 : 남기윤, 하정현
-'''
 
 class SubjectDetailView(RetrieveUpdateDestroyAPIView):
-
+    '''
+        작성자 : 남기윤, 하정현
+    '''
     # apiview variables
     model = Icreat
     serializer_class = IcreatSerializer
@@ -60,7 +58,7 @@ class SubjectDetailView(RetrieveUpdateDestroyAPIView):
     )
     def put(self, request, pk):
         return self.update(request, pk, partial = True)
-    
+
     @swagger_auto_schema(
         tags=['Icreate CRUD'],
         responses={
@@ -82,7 +80,11 @@ class SubjectDetailView(RetrieveUpdateDestroyAPIView):
         obj.save()
         return Response({"is_active": obj.is_active}, status=status.HTTP_204_NO_CONTENT)
 
-class SubjectListView(ListCreateAPIView): #/api/v1/icreat/list
+
+class SubjectListView(ListCreateAPIView): #/api/icreat/
+    '''
+        작성자 : 남기윤, 하정현
+    '''
     model = Icreat
     serializer_class = IcreatSerializer
 
@@ -94,7 +96,7 @@ class SubjectListView(ListCreateAPIView): #/api/v1/icreat/list
         a_week_ago = datetime.today() - timedelta(days = 7)
         subjects = Icreat.objects.filter(modified_at__gte=a_week_ago)[offset:limit]
         return subjects
-    
+
     """
     아래 함수는 SWAGGER 작성을 위해서
     따로 생성

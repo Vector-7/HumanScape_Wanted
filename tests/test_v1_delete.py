@@ -1,14 +1,14 @@
 from rest_framework.test import APITestCase
-from rest_framework import status
 
-from v1.icreat.serializers import IcreatSerializer
-from v1.icreat.models import Icreat
+from apps.icreat.serializers import IcreatSerializer
+from apps.icreat.models import Icreat
+
 
 class TestIcreatDelete(APITestCase):
     """
     작성자: 하정현
     """
-    API = '/api/v1/icreat'
+    API = '/api/icreat'
     # 업로드
     req = {
         "subject"       : '조직구증식증 임상연구 네트워크 구축 및 운영(HLH)',
@@ -29,18 +29,18 @@ class TestIcreatDelete(APITestCase):
         s.is_valid()
         s.save()
         self.user_id = Icreat.objects.get(sub_num=self.req['sub_num']).id
-    
+
     def test_delete(self):
         sub_num = self.req['sub_num']
 
-        self.assertEqual(self.client.delete(f"{self.API}{self.user_id}").status_code,
+        self.assertEqual(self.client.delete(f"{self.API}/{self.user_id}").status_code,
                         204)
 
         # 두번 삭제는 안됨
-        self.assertEqual(self.client.delete(f"{self.API}{self.user_id}").status_code,
+        self.assertEqual(self.client.delete(f"{self.API}/{self.user_id}").status_code,
                         400)
 
 
     def test_delete_failed(self):
-        self.assertEqual(self.client.delete(f"{self.API}12341234").status_code,
+        self.assertEqual(self.client.delete(f"{self.API}/12341234").status_code,
                         404)

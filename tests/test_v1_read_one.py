@@ -1,14 +1,14 @@
 from rest_framework.test import APITestCase
-from rest_framework import status
 
-from v1.icreat.serializers import IcreatSerializer
-from v1.icreat.models import Icreat
+from apps.icreat.serializers import IcreatSerializer
+from apps.icreat.models import Icreat
+
 
 class TestIcreatReadOne(APITestCase):
     """
     작성자: 하정현
     """
-    API = '/api/v1/icreat'
+    API = '/api/icreat'
     user_id = 0
 
     req = {
@@ -30,12 +30,12 @@ class TestIcreatReadOne(APITestCase):
         s.is_valid()
         s.save()
         self.user_id = Icreat.objects.get(sub_num=self.req['sub_num']).id
-    
+
     def test_read(self):
-        res = self.client.get(f"{self.API}{self.user_id}")
+        res = self.client.get(f"{self.API}/{self.user_id}")
         self.assertEqual(res.status_code, 200)
 
     def test_read_failed(self):
         # 없는 sub num
-        res = self.client.get(f"{self.API}44444")
+        res = self.client.get(f"{self.API}/44444")
         self.assertEqual(res.status_code, 404)

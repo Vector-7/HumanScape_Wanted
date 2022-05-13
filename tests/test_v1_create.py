@@ -1,8 +1,8 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 
-from v1.icreat.serializers import IcreatSerializer
-from v1.icreat.models import Icreat
+from apps.icreat.serializers import IcreatSerializer
+from apps.icreat.models import Icreat
 
 
 class TestIcreatCreate(APITestCase):
@@ -11,7 +11,7 @@ class TestIcreatCreate(APITestCase):
 
     시간이 남으면 Serializer 디버깅과 함께 테스트케이스 대폭 강화 예정
     """
-    UPLOAD_API = f'/api/v1/icreat/list'
+    UPLOAD_API = f'/api/icreat'
     
     def test_create_success(self):
         # 데이터 전부 채우고 정상작동 테스트

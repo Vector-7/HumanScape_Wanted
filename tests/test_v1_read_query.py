@@ -1,10 +1,11 @@
-from rest_framework.test import APITestCase
-from rest_framework import status
 import datetime
 
-from v1.icreat.serializers import IcreatSerializer
-from v1.icreat.models import Icreat
 from django.db import connection
+
+from rest_framework.test import APITestCase
+
+from apps.icreat.serializers import IcreatSerializer
+
 
 """
 tab탭 구별되어 있고 없는 데이터는 null로 표시
@@ -28,11 +29,11 @@ C160014	병원 기반 당뇨병 예방 프로그램의 효과 비교를 위한 �
 C110011	병원 기반 인플루엔자 임상 네트워크	Infectious disease	고려대구로병원	null	null	관찰연구	Case-only	국내다기관
 C140001	병원 기반 인플루엔자 임상 네트워크(소아청소년)	Pediatrics	고려대구로병원	null	null	관찰연구	Case-only	국내다기관"""
 
-class TestV1IcreatReadQuery(APITestCase):
+class TestappsIcreatReadQuery(APITestCase):
     """
     작성자: 하정현
     """
-    API = '/api/v1/icreat/list'
+    API = '/api/icreat'
 
 
     @classmethod
