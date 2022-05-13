@@ -4,10 +4,13 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 from rest_framework import status
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from django.shortcuts import get_object_or_404
 
 from .serializers import IcreatSerializer
 from .models import IcreatV2
+
 
 
 class SubjectDetailView(RetrieveUpdateDestroyAPIView):
@@ -20,6 +23,7 @@ class SubjectDetailView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         res = IcreatV2.objects.all()
         return res
+
 
     def get(self, request, pk):
         return self.retrieve(request, pk)

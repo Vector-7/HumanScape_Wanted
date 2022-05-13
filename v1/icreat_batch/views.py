@@ -45,10 +45,16 @@ class IcreatBatchView(APIView):
             )
 
     @swagger_auto_schema(
-        tags=['임상 실험 과제를 API Server로부터 갱신합니다.'],
+        tags=['Batch API'],
         responses={
             201: '성공',
-    })
+        },
+        operation_summary='API 서버로부터 임상 과제들을 갱신합니다.',
+        operation_description="""
+        질병관리청 임상연구 과제정보로부터 OpenAPI 형식으로
+        임상 과제들을 갱신받습니다.
+        """
+    )
     def post(self, request):
         # 로깅을 위한 변수 SET
         created_count = 0
