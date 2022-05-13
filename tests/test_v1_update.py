@@ -1,14 +1,14 @@
 from rest_framework.test import APITestCase
-from rest_framework import status
 
-from v1.icreat.models import Icreat
-from v1.icreat.serializers import IcreatSerializer
+from apps.icreat.models import Icreat
+from apps.icreat.serializers import IcreatSerializer
+
 
 class TestIcreatUpdate(APITestCase):
     """
     작성자: 하정현
     """
-    API = '/api/v1/icreat'
+    API = '/api/icreat'
 
     req = {
             "subject"       : '조직구증식증 임상연구 네트워크 구축 및 운영(HLH)',
@@ -34,7 +34,7 @@ class TestIcreatUpdate(APITestCase):
 
         # 데이터 수정하기
         req = self.req.copy()
-        res = self.client.patch(f"{self.API}{self.user_id}", data={'period': '10년'})
+        res = self.client.patch(f"{self.API}/{self.user_id}", data={'period': '10년'})
         self.assertEqual(res.status_code, 200)
         
         # 변경 확인
@@ -49,5 +49,5 @@ class TestIcreatUpdate(APITestCase):
     def test_no_is_active(self):
         # is_active 수정 불가
         req = self.req.copy()
-        res = self.client.patch(f"{self.API}{self.user_id}", data={'is_active': False})
+        res = self.client.patch(f"{self.API}/{self.user_id}", data={'is_active': False})
         self.assertEqual(res.status_code, 400)

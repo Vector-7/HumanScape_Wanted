@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
+
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+
 from rest_framework import permissions
-from django.conf import settings
-from django.conf.urls.static import static
+
 
 # swagger view
 schema_view = get_schema_view(
@@ -36,8 +37,6 @@ if not settings.DEBUG:
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/icreat', include('v1.icreat.urls')),
-    path('api/v1/batch', include('v1.icreat_batch.urls')),
-    path('api/v2/icreat', include('v2.icreat.urls')),
-    path('api/v2/batch', include('v2.icreat_batch.urls')),
+    path('api/icreat', include('apps.icreat.urls')),
+    path('api/batch', include('apps.icreat_batch.urls')),
 ] + swagger_urlpatterns

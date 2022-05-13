@@ -252,7 +252,7 @@ API
 * 마지막으로 시작시간, 종료시간, 생성된 수, 업데이트된 수, 생성된 데이터의 과제번호 리스트, 업데이트된 데이터의 과제번호 리스트를 수집하여 `batch_log` 테이블에 로깅합니다.
 
 3. 실행 방법.
-* `METHOD = POST`, `api/v1/batch` 로 request합니다. `{'message' : "success!"}`가 출력되면 성공!
+* `METHOD = POST`, `api/batch` 로 request합니다. `{'message' : "success!"}`가 출력되면 성공!
 ---
 ### 하정현
 #### 배포 진행

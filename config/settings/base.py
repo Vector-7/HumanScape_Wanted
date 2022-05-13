@@ -11,10 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # Application definition
 
 PROJECT_APPS = [
-    'v1.icreat',
-    'v1.icreat_batch',
-    'v2.icreat',
-    'v2.icreat_batch',
+    'apps.icreat',
+    'apps.icreat_batch',
 ]
 
 THIRD_PARTY_APPS = [
@@ -144,6 +142,5 @@ CRONTAB_DJANGO_SETTINGS_MODULE = 'config.settings.local'
 
 # 매주 월요일 새벽 1시 실행
 CRONJOBS = [
-    ('* 1 * * 1', 'v1.icreat_batch.cron.batch_req', '>>'+f'{BASE_DIR}'+'/cron.log 2>&1'),
-    ('* 1 * * 1', 'v2.icreat_batch.cron.batch_get_data', '>>'+f'{BASE_DIR}'+'/cron.log2 2>&1'),
+    ('* 1 * * 1', 'apps.icreat_batch.cron.batch_req', '>>'+f'{BASE_DIR}'+'/cron.log 2>&1'),
 ]

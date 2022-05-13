@@ -2,5 +2,5 @@ import requests
 
 
 def batch_req():
-    url = "http://localhost:8000/api/v1/batch"
+    url = "http://localhost:8000/api/batch"
     return requests.post(url)
