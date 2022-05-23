@@ -5,7 +5,9 @@
 
 임상정보 open API를 수집하는 WEB Aplication을 설계, 구현, 개발합니다.
 
-[배포 링크: http://dev.sweetcase.kr:9000/swagger](http://dev.sweetcase.kr:9000/swagger)
+~[배포 링크: http://dev.sweetcase.kr:9000/swagger](http://dev.sweetcase.kr:9000/swagger)~
+
+**현재 개인 서버의 본체가 고장이 난 이유로 배포가 중단되었습니다.**
 
 ## 과제 기한:
 * 3 ~ 5인이 2 ~ 3일 이내로 완료하세요  
